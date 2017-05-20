@@ -1,0 +1,35 @@
+﻿<Window x:Class="FantasyFootball.Views.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FantasyFootball.Views"
+        mc:Ignorable="d"
+        Style="{StaticResource MainWindowStyle}">
+    <Grid>
+        <Border Style="{StaticResource MainWindowBorderSolid}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid MouseDown="WindowDrag_MouseDown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.ColumnSpan="4" Background="Black" />
+                    <Label Name="TitleLabel" Style="{StaticResource TitleLabel}"/>
+                    <Button Grid.Column="1" Name="MinimizeButton" Style="{StaticResource MinimizeButton}" Click="MinimizeButton_Click" />
+                    <Button Grid.Column="2" Name="MaximizeButton" Style="{StaticResource MaximizeButton}" Click="MaximizeButton_Click" />
+                    <Button Grid.Column="3" Name="CloseButton" Style="{StaticResource CloseButton}" Click="CloseButton_Click" />
+                </Grid>
+                <local:MainMenuBarView Grid.Row="1"/>
+                <ContentPresenter Grid.Row="2" Content="{Binding CurrentView}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
