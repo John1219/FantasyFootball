@@ -1,9 +1,11 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using FantasyFootball.Views;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebReader;
 
 namespace FantasyFootball.ViewModels
 {
@@ -28,6 +30,10 @@ namespace FantasyFootball.ViewModels
             MessengerInstance.Register<NotificationMessage>(this, HandelNotificationMessage);
 
             CheckSignInStatus();
+            CurrentView = new AllPlayersView();
+
+            //Debug.DebugWindowView debug_view = new Debug.DebugWindowView();
+            //debug_view.ShowDialog();
 
         }
 
