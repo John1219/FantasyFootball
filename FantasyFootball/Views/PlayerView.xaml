@@ -58,6 +58,9 @@
                     <GridViewColumn Header=" " Width="Auto" DisplayMemberBinding="{Binding GameLocation}" />
                     <GridViewColumn Header="Opp" Width="Auto" DisplayMemberBinding="{Binding Opponent}" />
                     <GridViewColumn Header="Result" Width="Auto" DisplayMemberBinding="{Binding GameResult}" />
+                    <GridViewColumn Header="Att" Width="Auto" DisplayMemberBinding="{Binding RushingAttempts}" />
+                    <GridViewColumn Header="Yds" Width="Auto" DisplayMemberBinding="{Binding RushingYards}" />
+                    <GridViewColumn Header="TD" Width="Auto" DisplayMemberBinding="{Binding RushingTouchdowns}" />
                     <GridViewColumn Header="Tgt" Width="Auto" DisplayMemberBinding="{Binding Targets}" />
                     <GridViewColumn Header="Rec" Width="Auto" DisplayMemberBinding="{Binding Receptions}" />
                     <GridViewColumn Header="Yds" Width="Auto" DisplayMemberBinding="{Binding ReceivingYards}" />
@@ -68,6 +71,18 @@
                     <GridViewColumn Header="Sk" Width="Auto" DisplayMemberBinding="{Binding Sacks}" />
                     <GridViewColumn Header="Tkl" Width="Auto" DisplayMemberBinding="{Binding SoloTackles}" />
                     <GridViewColumn Header="Ast" Width="Auto" DisplayMemberBinding="{Binding Assists}" />
+                    <GridViewColumn Header="KR" Width="Auto" DisplayMemberBinding="{Binding KickReturns}"/>
+                    <GridViewColumn Header="KR Yards" Width="Auto" DisplayMemberBinding="{Binding KickReturnYards}"/>
+                    <GridViewColumn Header="KR Tds" Width="Auto" DisplayMemberBinding="{Binding KickReturnTouchdowns}"/>
+                    <GridViewColumn Header="XPM" Width="Auto" DisplayMemberBinding="{Binding XtraPointsMade}" />
+                    <GridViewColumn Header="XPA" Width="Auto" DisplayMemberBinding="{Binding XtraPointsAttempted}" />
+                    <GridViewColumn Header="FGM" Width="Auto" DisplayMemberBinding="{Binding FieldGoalsMade}" />
+                    <GridViewColumn Header="FGA" Width="Auto" DisplayMemberBinding="{Binding FieldGoalsAttempted}" />
+                    <GridViewColumn Header="INT" Width="Auto" DisplayMemberBinding="{Binding Interceptions}" />
+                    <GridViewColumn Header="Yds" Width="Auto" DisplayMemberBinding="{Binding InterceptionYards}" />
+                    <GridViewColumn Header="TD" Width="Auto" DisplayMemberBinding="{Binding InterceptionTouchdowns}" />
+
+
                 </GridView>
             </ListView.View>
         </ListView>

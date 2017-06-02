@@ -11,7 +11,6 @@ namespace WebReader.ProFootballReference
 {
     public class ProFootballReference
     {
-        
         public static event Action LocalPlayerListChanged = delegate { };
         public static event Action LocalPlayerInfoLoaded = delegate { };
         public event Action PlayerListChanged = delegate { };
@@ -25,23 +24,23 @@ namespace WebReader.ProFootballReference
 
         public ProFootballReference()
         {
-            LocalPlayerListChanged += UpdateAllPlayers;
-            LocalPlayerInfoLoaded += UpdatePlayerData;
             all_player_list = new List<Player>();
+
+            LocalPlayerListChanged += UpdatePlayerList;
+            LocalPlayerInfoLoaded += UpdatePlayerData;
         }
 
         public void LoadPlayers()
         {
             if (File.Exists(string.Format("{0}{1}", kPlayers, kXml)))
             {
-
-                LoadFromXml();
-                PlayerListChanged();
+                all_player_list = (List<Player>)LoadFromXml(all_player_list.GetType(), string.Format("{0}{1}", kPlayers, kXml));
             }
             else
             {
                 LoadAllPlayers();
             }
+            PlayerListChanged();
         }
 
         public void LoadPlayerData(Player player)
@@ -52,9 +51,8 @@ namespace WebReader.ProFootballReference
             }
         }
 
-
-        private const string kXml = ".xml";
         private const string kPlayers = "Players";
+        private const string kXml = ".xml";
 
         private static string url_root = "http://www.pro-football-reference.com";
         private static string url_players = url_root + "/players/";
@@ -69,11 +67,10 @@ namespace WebReader.ProFootballReference
             int loop_total = (Strings.ALPHABET.ToCharArray().ToList().Count);
             foreach (char c in Strings.ALPHABET.ToCharArray())
             {
-
                 string letter = c.ToString();
                 string url = string.Format(@"{0}{1}/", url_players, letter);
                 Task<IEnumerable<Player>> player_list = GetPlayersAsync(url);
-                player_list.ContinueWith(t =>
+                player_list.ContinueWith(t => 
                 {
                     loop_index++;
                     if (loop_index == loop_total)
@@ -81,15 +78,16 @@ namespace WebReader.ProFootballReference
                         is_update_complete = true;
                     }
                     all_player_list.AddRange(player_list.Result);
-                    LocalPlayerListChanged();
                     if (is_update_complete)
                     {
                         is_update_complete = false;
-                        //LoadAdditionalData();
+                    }
+                    else
+                    {
+                        LocalPlayerListChanged(); 
                     }
                 });
             }
-
         }
 
         private static void LoadAdditionalData()
@@ -135,45 +133,53 @@ namespace WebReader.ProFootballReference
             });
         }
 
-        private void UpdateAllPlayers()
+        private void UpdatePlayerList()
         {
-            PlayerListChanged();
-            if (is_update_complete)
+            if (SaveToXml(all_player_list, string.Format("{0}{1}", kPlayers, kXml)))
             {
-                SaveToXml(); 
+                PlayerListChanged();
             }
-            if(is_addtional_info_complete)
+            else
             {
-                SaveToXml();
+                Task<bool> successful_save = SaveToXmlAsync(all_player_list, string.Format("{0}{1}", kPlayers, kXml));
+                successful_save.ContinueWith(t =>
+                {
+                    if (successful_save.Result)
+                    {
+                        PlayerListChanged();
+                    }
+                });
             }
         }
 
         private void UpdatePlayerData()
         {
+            SaveToXml(all_player_list, string.Format("{0}{1}", kPlayers, kXml));
             PlayerInfoLoaded();
-            SaveToXml();
         }
 
         private static IEnumerable<Player> GetPlayers(string url)
         {
-            WebPage web_page = new WebPage(url);
-            string xpath = "//div[@id='div_players']//p";
-            List <Player> player_list = new List<Player>(); 
-            foreach (HtmlNode item in web_page.GetNodes(xpath))
-            {
+            List<Player> player_list = new List<Player>();
 
-                string position_year = item.InnerHtml.Replace(item.SelectNodes(".//a").FirstOrDefault().OuterHtml, "").Replace("<b>", "").Replace(@"</b>", "");
+            WebPage web_page = new WebPage(url);
+
+            HtmlNode player_div = web_page.GetSingleNode("div", "id", "div_players");
+            IEnumerable <HtmlNode> player_paragraphs = web_page.GetNodes(player_div, "p");
+            foreach (HtmlNode n in player_paragraphs)
+            {
+                string position_year = n.InnerHtml.Replace(web_page.GetSingleNode(n, "a").OuterHtml, "").Replace("<b>", "").Replace(@"</b>", "");
                 Player p = new Player()
                 {
-                    Name = item.SelectNodes(".//a").FirstOrDefault().InnerHtml.Trim(),
+                    Name = web_page.GetSingleNode(n, "a").InnerHtml.Trim(),
                     Position = position_year.Split('(', ')')[1].Trim(),
-                    Link = item.SelectNodes(".//a").FirstOrDefault().Attributes["href"].Value.Trim(),
+                    Link = web_page.GetSingleNode(n, "a").GetAttributeValue("href", "").Trim(),
                     Years = position_year.Split(')')[1].Trim(),
-                    IsActive = (item.InnerHtml.Contains("<b>")),
+                    IsActive = (n.InnerHtml.Contains("<b>")),
                 };
                 player_list.Add(p);
             }
-            return player_list.Where(p => p != null);
+            return player_list.OrderBy(p => p.Link);
         }
 
         private static Task<IEnumerable<Player>> GetPlayersAsync(string url)
@@ -190,8 +196,8 @@ namespace WebReader.ProFootballReference
 
             try
             {
-                WebPage web_page = new WebPage();
-                HtmlNode root_node = web_page.GetRootNode(url_root + player.Link);
+                WebPage web_page = new WebPage(url_root + player.Link);
+                HtmlNode root_node = web_page.GetRootNode;
 
                 IEnumerable<HtmlNode> height_spans = root_node.Descendants("span").Where(n => n.GetAttributeValue("itemprop", "").Equals("height"));
                 string height = (height_spans.Count() == 1) ? height_spans.Single().InnerText : "";
@@ -264,8 +270,8 @@ namespace WebReader.ProFootballReference
 
             try
             {
-                WebPage web_page = new WebPage();
-                HtmlNode root_node = web_page.GetRootNode(url_root + player.GameLogsLink);
+                WebPage web_page = new WebPage(url_root + player.GameLogsLink);
+                HtmlNode root_node = web_page.GetRootNode;
 
                 IEnumerable<HtmlNode> stats_tables = root_node.Descendants("table").Where(n => n.GetAttributeValue("id", "").Equals("stats"));
                 IEnumerable<HtmlNode> stats_table_rows = stats_tables.Single().Descendants("tbody").Single().Descendants("tr");
@@ -287,6 +293,9 @@ namespace WebReader.ProFootballReference
                     log.Opponent = GetDataStatValue(tr, "opp");
                     log.GameResult = GetDataStatValue(tr, "game_result");
                     log.Targets = GetDataStatValue(tr, "targets");
+                    log.RushingAttempts = GetDataStatValue(tr, "rush_att");
+                    log.RushingYards = GetDataStatValue(tr, "rush_yds");
+                    log.RushingTouchdowns = GetDataStatValue(tr, "rush_td");
                     log.Receptions = GetDataStatValue(tr, "rec");
                     log.ReceivingYards = GetDataStatValue(tr, "rec_yds");
                     log.ReceivingTouchdowns = GetDataStatValue(tr, "rec_td");
@@ -296,6 +305,16 @@ namespace WebReader.ProFootballReference
                     log.Sacks = GetDataStatValue(tr, "sacks");
                     log.SoloTackles = GetDataStatValue(tr, "tackles_solo");
                     log.Assists = GetDataStatValue(tr, "tackles_assists");
+                    log.XtraPointsMade = GetDataStatValue(tr, "xpm");
+                    log.XtraPointsAttempted = GetDataStatValue(tr, "xpa");
+                    log.FieldGoalsMade = GetDataStatValue(tr, "fgm");
+                    log.FieldGoalsAttempted = GetDataStatValue(tr, "fga");
+                    log.KickReturns = GetDataStatValue(tr, "kick_ret");
+                    log.KickReturnYards = GetDataStatValue(tr, "kick_ret_yds");
+                    log.KickReturnTouchdowns = GetDataStatValue(tr, "kick_ret_td");
+                    log.Interceptions = GetDataStatValue(tr, "def_int");
+                    log.InterceptionYards = GetDataStatValue(tr, "def_int_yds");
+                    log.InterceptionTouchdowns = GetDataStatValue(tr, "def_int_td");
 
                     if (log.Id != 0)
                     {
@@ -331,26 +350,52 @@ namespace WebReader.ProFootballReference
             return (td.Count() == 1) ? td.Single().InnerText : "";
         }
 
-        private void LoadFromXml()
+        /// <summary>
+        /// Load an object from an Xml file.
+        /// </summary>
+        /// <param name="type">The type of the object to load.</param>
+        /// <param name="source">The path of the xml file to load from.</param>
+        /// <returns>The object loaded from the Xml file.</returns>
+        private object LoadFromXml(Type type, string source)
         {
-            all_player_list = new List<Player>();
-            XmlSerializer deserializer = new XmlSerializer(all_player_list.GetType());
-            TextReader reader = new StreamReader(string.Format("{0}{1}", kPlayers, kXml));
+            XmlSerializer deserializer = new XmlSerializer(type);
+            TextReader reader = new StreamReader(source);
             object obj = deserializer.Deserialize(reader);
-            all_player_list = (List<Player>)obj;
             reader.Close();
+
+            return obj;
         }
 
-        private void SaveToXml()
+        private static bool SaveToXml(object obj, string destination)
         {
-            XmlSerializer x = new XmlSerializer(all_player_list.GetType());
-
-            using (
-                
-                TextWriter writer = new StreamWriter(string.Format("{0}{1}", kPlayers, kXml)))
+            try
             {
-                x.Serialize(writer, all_player_list);
+                XmlSerializer x = new XmlSerializer(obj.GetType());
+                using (TextWriter writer = new StreamWriter(destination))
+                {
+                    x.Serialize(writer, obj);
+                }
+
+                return true;
             }
+            catch (IOException iox)
+            {
+                Console.WriteLine(iox);
+            }
+            catch (Exception x)
+            {
+                Console.WriteLine(x);
+            }
+
+            return false;
+        }
+
+        private static Task<bool> SaveToXmlAsync(object obj, string destination)
+        {
+            return Task.Run(() =>
+            {
+                return SaveToXml(obj, destination);
+            });
         }
     }
 }
