@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebReader.ProFootballReference {
+namespace MyToolbox.ProFootballReference {
     using System;
     
     

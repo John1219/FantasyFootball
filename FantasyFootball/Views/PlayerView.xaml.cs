@@ -2,7 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using WebReader.ProFootballReference;
+using MyToolbox.ProFootballReference;
 
 namespace FantasyFootball.Views
 {

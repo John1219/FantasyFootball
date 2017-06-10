@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyFootball", "FantasyFootball\FantasyFootball.csproj", "{800C92A1-63DC-471C-ACB1-410DC1F4183A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebReader", "WebReader\WebReader.csproj", "{ADE83C80-EC0F-446F-A520-2A5BB4E87783}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyToolBox", "WebReader\MyToolBox.csproj", "{ADE83C80-EC0F-446F-A520-2A5BB4E87783}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -150,9 +150,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WebReader\WebReader.csproj">
+    <ProjectReference Include="..\WebReader\MyToolBox.csproj">
       <Project>{ADE83C80-EC0F-446F-A520-2A5BB4E87783}</Project>
-      <Name>WebReader</Name>
+      <Name>MyToolBox</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

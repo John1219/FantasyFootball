@@ -12,6 +12,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid MouseDown="WindowDrag_MouseDown">
@@ -27,8 +28,9 @@
                     <Button Grid.Column="2" Name="MaximizeButton" Style="{StaticResource MaximizeButton}" Click="MaximizeButton_Click" />
                     <Button Grid.Column="3" Name="CloseButton" Style="{StaticResource CloseButton}" Click="CloseButton_Click" />
                 </Grid>
-                <local:MainMenuBarView Grid.Row="1"/>
-                <ContentPresenter Grid.Row="2" Content="{Binding CurrentView}"/>
+                <ProgressBar Grid.Row="1" IsIndeterminate="True"/>
+                <local:MainMenuBarView Grid.Row="2"/>
+                <ContentPresenter Grid.Row="3" Content="{Binding CurrentView}"/>
             </Grid>
         </Border>
     </Grid>

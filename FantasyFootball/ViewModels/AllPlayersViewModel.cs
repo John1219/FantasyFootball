@@ -1,7 +1,7 @@
 ﻿using FantasyFootball.Models;
 using System;
 using System.Collections.Generic;
-using WebReader.ProFootballReference;
+using MyToolbox.ProFootballReference;
 
 namespace FantasyFootball.ViewModels
 {

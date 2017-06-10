@@ -1,4 +1,4 @@
-﻿namespace WebReader.ProFootballReference
+﻿namespace MyToolbox.ProFootballReference
 {
     public class GameLog
     {

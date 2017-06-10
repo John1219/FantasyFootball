@@ -6,18 +6,50 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebReader
+namespace MyToolbox
 {
     public class WebPage
     {
-        public WebPage(string url)
+        public HtmlDocument Document
         {
-            web = new HtmlWeb();
-            document = new HtmlDocument();
-            document.LoadHtml(new WebClient().DownloadString(url));
-            root_node = document.DocumentNode;
+            get { return document; }
         }
 
+        public HtmlNode RootNode
+        {
+            get { return root_node; }
+        }
+
+        public WebPage()
+        {
+            Initialize();
+        }
+
+        public WebPage(string url)
+        {
+            Initialize();
+            LoadPage(url);
+        }
+
+        public bool LoadPage(string url)
+        {
+            try
+            {
+                document.LoadHtml(new WebClient().DownloadString(url));
+                root_node = document.DocumentNode;
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(string.Format("LoadPage({0})", url));
+                Console.WriteLine(ex);
+            }
+
+            return false;
+        }
+
+        //Depricated - to be removed
         public HtmlNode GetRootNode
         {
             get { return root_node; }
@@ -40,7 +72,7 @@ namespace WebReader
 
         public IEnumerable<HtmlNode> GetNodes(HtmlNode node, string name, string attribute, string value)
         {
-            if((String.IsNullOrEmpty(attribute)) && (String.IsNullOrEmpty(value)))
+            if ((String.IsNullOrEmpty(attribute)) && (String.IsNullOrEmpty(value)))
             {
                 return node.Descendants(name);
             }
@@ -71,5 +103,11 @@ namespace WebReader
         private HtmlWeb web;
         private HtmlDocument document;
         private HtmlNode root_node;
+
+        private void Initialize()
+        {
+            web = new HtmlWeb();
+            document = new HtmlDocument();
+        }
     }
 }

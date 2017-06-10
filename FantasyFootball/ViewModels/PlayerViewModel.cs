@@ -1,6 +1,6 @@
 ﻿using FantasyFootball.Models;
 using System.Collections.Generic;
-using WebReader.ProFootballReference;
+using MyToolbox.ProFootballReference;
 
 namespace FantasyFootball.ViewModels
 {
@@ -25,7 +25,7 @@ namespace FantasyFootball.ViewModels
         public PlayerViewModel()
         {
             pfr = new ProFootballReference();
-            pfr.PlayerInfoLoaded += RefreshPlayer;
+            pfr.PlayerInfoChanged += RefreshPlayer;
 
         }
 

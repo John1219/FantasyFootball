@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using WebReader.ProFootballReference;
+using MyToolbox.ProFootballReference;
 
 namespace FantasyFootball.Models
 {
@@ -35,7 +35,7 @@ namespace FantasyFootball.Models
 
         private void UpdatePlayerList()
         {
-            AllPlayers = pfr.Allplayers;
+            AllPlayers = pfr.AllPlayers;
             PlayerListChanged();
         }
     }
