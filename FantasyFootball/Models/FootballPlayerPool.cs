@@ -28,8 +28,20 @@ namespace FantasyFootball.Models
             pfr.LoadPlayers();
         }
 
-        private const string kXml = ".xml";
-        private const string kPlayers = "Players";
+        public void GetPlayerInfo(Player player)
+        {
+            pfr.LoadPlayerData(player);
+        }
+
+        public bool CheckPlayerInfo(Player player)
+        {
+            if(player.LastUpdated < DateTime.Now.AddDays(-1))
+            {
+                GetPlayerInfo(player);
+                return true;
+            }
+            return false;
+        }
 
         private ProFootballReference pfr;
 

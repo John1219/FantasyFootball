@@ -4,7 +4,7 @@ using MyToolbox.ProFootballReference;
 
 namespace FantasyFootball.ViewModels
 {
-    public class PlayerViewModel : BaseViewModel
+    public class PlayerViewModel : BasePlayerViewModel
     {
 
         private Player selected_player;
@@ -14,26 +14,14 @@ namespace FantasyFootball.ViewModels
             set
             {
                 selected_player = value;
-                if ((string.IsNullOrEmpty(selected_player.Height)) || (string.IsNullOrEmpty(selected_player.Weight)) || (string.IsNullOrEmpty(selected_player.BirthDate)) || (string.IsNullOrEmpty(selected_player.BirthPlace)) || (string.IsNullOrEmpty(selected_player.DeathDate)) || (string.IsNullOrEmpty(selected_player.College)))
-                {
-                    pfr.LoadPlayerData(selected_player);
-                }
+                PlayerPool.CheckPlayerInfo(selected_player);
                 RaisePropertyChanged();
             }
         }
 
         public PlayerViewModel()
         {
-            pfr = new ProFootballReference();
-            pfr.PlayerInfoChanged += RefreshPlayer;
 
-        }
-
-        private ProFootballReference pfr;
-
-        private void RefreshPlayer()
-        {
-            RaisePropertyChanged("SelectedPlayer");
         }
     }
 }

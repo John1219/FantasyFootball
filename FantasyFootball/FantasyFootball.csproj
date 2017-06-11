@@ -71,13 +71,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BaseClasses\BasePlayerViewModel.cs" />
     <Compile Include="Debug\DebugWindowView.xaml.cs">
       <DependentUpon>DebugWindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Debug\DebugWindowViewModel.cs" />
     <Compile Include="Models\FootballPlayerPool.cs" />
     <Compile Include="ViewModels\AllPlayersViewModel.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="BaseClasses\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainMenuBarViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />

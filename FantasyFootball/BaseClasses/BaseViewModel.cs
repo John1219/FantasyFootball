@@ -6,6 +6,7 @@ namespace FantasyFootball
     {
         private static bool is_signed_in;
 
-        protected bool IsSignedIn { get => is_signed_in; set => is_signed_in = value; }
+        protected bool IsSignedIn
+        { get => is_signed_in; set => is_signed_in = value; }
     }
 }

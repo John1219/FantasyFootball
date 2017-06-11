@@ -23,7 +23,12 @@
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Left">
-            <ListView ItemsSource="{Binding AllPlayers}" SelectedItem="{Binding SelectedPlayer}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ComboBox Grid.Row="0" ItemsSource="{Binding FilterOptions}" SelectedItem="{Binding SelectedFilter}" />
+            <ListView Grid.Row="1" ItemsSource="{Binding AllPlayers}" SelectedItem="{Binding SelectedPlayer}" MinWidth="290">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>

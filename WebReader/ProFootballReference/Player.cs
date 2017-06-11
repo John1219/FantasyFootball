@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MyToolbox.ProFootballReference
 {
     public class Player
     {
+        public DateTime LastUpdated { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }
         public string Years { get; set; }

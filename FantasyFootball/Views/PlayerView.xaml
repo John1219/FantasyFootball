@@ -23,8 +23,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Background="LawnGreen">
-            <Image Source="{Binding SelectedPlayer.HeadShotPath}" Width="92" Height="108" />
+        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Background="Transparent" Margin="15">
+            <Image Source="{Binding SelectedPlayer.HeadShotPath}" Width="92" Height="108">
+                <Image.Effect>
+                    <DropShadowEffect BlurRadius="40" ShadowDepth="0"/>
+                </Image.Effect>
+            </Image>
         </Border>
         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedPlayer.Name}" FontSize="27"/>
         <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding SelectedPlayer.Team}" FontSize="15"/>

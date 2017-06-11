@@ -23,8 +23,6 @@ namespace MyToolbox.ProFootballReference
             all_players_list = new List<Player>();
         }
 
-        
-
         public void LoadPlayers()
         {
             if (File.Exists(string.Format("{0}{1}", kPlayers, kXml)))
@@ -46,7 +44,7 @@ namespace MyToolbox.ProFootballReference
 
                 GetAddtionalPlayerData(player);
                 GetPlayerStats(player);
-
+                player.LastUpdated = DateTime.Now;
                 Save();
             }
         }
