@@ -10,17 +10,8 @@
         <Setter Property="Width"                                Value="1219"/>
         <Setter Property="WindowStyle"                          Value="None"/>
     </Style>
-    <Style x:Key="RtSportsWindowStyle" TargetType="Window">
-        <Setter Property="AllowsTransparency"                   Value="True"/>
-        <Setter Property="Background"                           Value="{x:Null}"/>
-        <Setter Property="Height"                               Value="854"/>
-        <Setter Property="ResizeMode"                           Value="CanResizeWithGrip"/>
-        <Setter Property="Title"                                Value="RtSports"/>
-        <Setter Property="Width"                                Value="1046"/>
-        <Setter Property="WindowStyle"                          Value="None"/>
-    </Style>
     <Style x:Key="MainWindowBorderSolid" TargetType="Border">
-        <Setter Property="Background"                           Value="White"/>
+        <Setter Property="Background"                           Value="#333300"/>
         <Setter Property="BorderBrush"                          Value="Black"/>
         <Setter Property="BorderThickness"                      Value="5"/>
         <Setter Property="CornerRadius"                         Value="10"/>
